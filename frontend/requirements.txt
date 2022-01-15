@@ -1,0 +1,11 @@
+flask
+flask-restful
+flask-sqlalchemy
+google-cloud-firestore
+gunicorn
+wtforms
+google-cloud-pubsub
+validators
+python-Levenshtein
+googlemaps
+geopy

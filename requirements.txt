@@ -1,0 +1,8 @@
+flask
+flask-restful
+google-cloud-firestore
+gunicorn
+wtforms
+google-cloud-pubsub
+validators
+python-Levenshtein

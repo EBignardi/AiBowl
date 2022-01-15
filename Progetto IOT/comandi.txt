@@ -1,0 +1,41 @@
+gcloud projects undelete sim8-mauropapagni-mauropapagni
+gcloud config set project sim5-mauropapagni
+1. gcloud iam service-accounts create client1
+2. gcloud projects add-iam-policy-binding ciotolaiot --member "serviceAccount:client1@ciotolaiot.iam.gserviceaccount.com" --role "roles/owner"
+3. copy NUL credentials.json
+4. gcloud iam service-accounts keys create credentials.json --iam-account client1@ciotolaiot.iam.gserviceaccount.com
+5. SET GOOGLE_APPLICATION_CREDENTIALS=credentials.json
+
+gcloud app deploy
+
+gcloud endpoints services deploy [OPENAPI].yaml --validate-only
+gcloud endpoints services deploy [OPENAPI].yaml
+
+gcloud pubsub topics create TOPIC [TOPIC ...]
+projects/[YOUR_PROJECT_ID]/topics/[TOPIC]
+● gcloud pubsub topics delete TOPIC
+● gcloud pubsub topics list
+● gcloud pubsub topics describe TOPIC
+
+1. Create a Pub/Sub topic
+gcloud pubsub topics create MY_TOPIC
+2. Deploy the publish function:
+gcloud functions deploy publish --trigger-http --runtime python37
+3. Deploy the subscribe function
+gcloud functions deploy subscribe --trigger-topic MY_TOPIC --runtime
+RUNTIME
+
+gcloud functions deploy FUNCTION_NAME \
+--runtime RUNTIME \
+--trigger-event "providers/cloud.firestore/eventTypes/document.write" \
+--trigger-resource
+"projects/YOUR_PROJECT_ID/databases/(default)/documents/{team}/{stat-type}"
+
+gcloud functions deploy hello_firestore --runtime python37 --trigger-event "providers/cloud.firestore/eventTypes/document.write" --trigger-resource "projects/sim5-mauro/databases/(default)/documents/{team}/{stat_type}"
+
+
+
+gcloud functions deploy hello_http --runtime python37 --trigger-http --allow-unauthenticated
+
+
+{"createTime": "2021-09-15T15:52:20.625807Z", "fields": {"currStats": {"mapValue": {"fields": {"avgMPM": {"doubleValue": 49.09}, "filters": {"mapValue": {"fields": {"exclude-roles": {"arrayValue": {"values": [{"stringValue": "DF"}, {"stringValue": "GK"}]}}}}}}}}, "prevStats": {"mapValue": {}}}, "name": "projects/sim5-mauro/databases/(default)/documents/PT/avgMPM", "updateTime": "2021-09-15T15:52:20.625807Z"}

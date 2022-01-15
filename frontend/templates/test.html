@@ -1,0 +1,39 @@
+<html>
+    <head><title>LatLng</title></head>
+    <body>
+
+        {% if response %}
+        <div>
+            <p style="color:blue">{{response}}</p>
+        </div>
+        {%endif%}
+       
+        {% if error %}
+        <div>
+            <p style="color:red">{{error}}</p>
+        </div>
+        {%endif%}
+
+        <form method="POST" action="/test">
+            {{form.lat.label}}:
+            {{form.lat}}
+            <br />
+            {{form.lng.label}}:
+            {{form.lng}}
+            <br />
+            {{form.submit}}
+        </form>
+        {%if diz%}
+        {%for key in diz%}
+        <p style="color:green">{{key}}:{{diz[key]}}%</p>
+        {%if key=='dog'%}
+        <img src="https://www.terranuova.it/var/terranuova/storage/images/chiedi-all-esperto/la-comunicazione-del-cane.-quando-i-segnali-che-invia-devono-farci-preoccupare/1394012-1-ita-IT/La-comunicazione-del-cane.-Quando-i-segnali-che-invia-devono-farci-preoccupare.jpg"  width="600" height="500">
+        {%elif key=='gatto'%}
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Leo_gatto_europeo.jpg"  width="600" height="500">
+        
+        {%endif%}
+        {%endfor%}
+        {%endif%}
+     
+    </body>
+</html>

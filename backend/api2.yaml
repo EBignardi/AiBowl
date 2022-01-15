@@ -1,0 +1,8 @@
+runtime: python37
+service: api2
+entrypoint: gunicorn api2:app
+
+handlers:
+  - url: /.*
+    secure: always
+    script: auto

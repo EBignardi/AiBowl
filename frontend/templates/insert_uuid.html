@@ -1,0 +1,35 @@
+<html>
+    <head><title>Insert Animal</title></head>
+    <body>
+
+        {% if response %}
+        <div>
+            <p style="color:green">{{response}}</p>
+        </div>
+        {%endif%}
+       
+        {% if error %}
+        <div>
+            <p style="color:red">{{error}}</p>
+        </div>
+        {%endif%}
+
+        <form method="POST" action="/admininsert/{{username}}/{{password}}">
+            {{form.animale.label}}:
+            {{form.animale}}
+            <br />
+            {{form.numero_pasti.label}}:
+            {{form.numero_pasti}}
+
+            <br/>
+            Quantità di cibo in grammi:
+            {{form.quantità_cibo}}
+            <br />
+            {{form.tipo.label}}:
+            {{form.tipo}}
+            <br />
+            
+            {{form.submit}}
+        </form>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+<html>
+    <head><title>Marketplace</title></head>
+    <body>
+        {%from "search.html" import retval as retval%}
+        <div>
+            <p>{%for x in retval%}
+                <tr>
+                    <li>{{x}}</li>
+                </tr>
+                {%endfor%}
+            </p>
+        </div>  
+
+
+    </body>
+</html>

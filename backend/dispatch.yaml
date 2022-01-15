@@ -1,0 +1,6 @@
+
+dispatch:
+  - url: "ciotolaiot.appspot.com/"
+    service: default
+  - url: "*/api/*"
+    service: api

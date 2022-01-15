@@ -1,0 +1,40 @@
+<html>
+    <head><title>Insert Aniamal</title></head>
+    <body>
+
+        {% if response %}
+        <div>
+            <p style="color:green">{{response}}</p>
+        </div>
+        {%endif%}
+       
+        {% if error %}
+        <div>
+            <p style="color:red">{{error}}</p>
+        </div>
+        {%endif%}
+
+        {% if status =="yes"%}
+        <form method="POST" action="/admininsert/{{username}}/{{password}}">
+            <p>Sarai reindirizzato alla pagina per l'inserimento di un nuovo animale</p>
+            {{form.submit}}
+        </form>
+        {%elif status =="no"%}
+        <form method="POST" action="/">
+            <p>Credenziali non corrette, sarai reindirizzato alla pagina iniziale</p>
+            {{form.submit}}
+        </form>
+        {%else%}
+        <form method="POST" action="/insert">
+            {{form.username.label}}:
+            {{form.username}}
+            <br />
+            {{form.password.label}}:
+            {{form.password}}
+            <br />
+            {{form.submit}}
+        </form>
+
+        {%endif%}
+    </body>
+</html>

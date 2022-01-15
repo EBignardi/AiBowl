@@ -1,0 +1,19 @@
+<html>
+    <head><title> Canile IOT</title></head>
+    <body>
+        <ul>
+           {% if r%}
+           {% for x in r%}
+           <p>------------------------------------</p>
+           <p>Tipo di animale: {{x['tipo']}}</p>
+           <p>Identificativo dell'animale:  </p>
+           <a href="/animal/{{x['animale']}}">{{x['animale']}} </a> 
+
+           {%endfor%}
+           {%endif%}
+            
+            
+        </ul>
+        
+    </body>
+</html>

@@ -1,0 +1,22 @@
+<html>
+    <head><title> Canile IOT</title></head>
+    <body>
+        <p>PASTI</p>
+        <ul>
+           {% if r%}
+           {% for x in r%}
+           <p>------------------------------------</p>
+           <p>Data: {{x['time']}}</p>
+           <p>Latitudine: {{x['lat']}}</p>
+           <p>Longitudine: {{x['long']}}</p>
+           
+           
+
+           {%endfor%}
+           {%endif%}
+            
+            
+        </ul>
+        
+    </body>
+</html>

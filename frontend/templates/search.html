@@ -1,0 +1,25 @@
+<html>
+    <head><title>Marketplace</title></head>
+    <body>
+        {% if retval %}
+        <div>
+            <p>{%for item in retval%}
+                <tr>
+                    <a href="/pagina" method=POST action="{{url_for('get_info')}}">{{item["title"]}}</a>
+                    <li>{{item["console"]}}</li>
+                    <li></li>
+                </tr>
+                {%endfor%}
+            </p>
+        </div>
+        {%endif%}
+
+        {% if error %}
+        <div>
+            <p style="color:red">{{error}}</p>
+        </div>
+        {%endif%}
+
+
+    </body>
+</html>

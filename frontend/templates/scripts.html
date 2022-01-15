@@ -1,0 +1,226 @@
+<script>
+    function CenterControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.marginTop= '15px';
+        controlUI.style.marginRight= '15px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Homepage';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '12px';
+        controlText.style.lineHeight = '28px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '15px';
+        controlText.innerHTML = 'Homepage';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+            window.open ('http://127.0.0.1:8080')
+        });
+
+    }
+
+
+{% if fzjavascript=='myMap'%}
+    // carico il json
+    function loadJSON(callback) {
+        var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+
+        // Replace 'my_data' with the path to your file
+        xobj.onreadystatechange = function() {
+            if (xobj.readyState === 4 && xobj.status === 200) {
+                // Required use of an anonymous callback
+                // as .open() will NOT return a value but simply returns undefined in asynchronous mode
+                callback(xobj.responseText);
+            }
+        };
+        xobj.open('GET', '/points', true);
+        xobj.send(null);
+    }
+
+
+  // generic function with a map and a list of points
+    function myMap() {
+        var mapProp= {
+            center:new google.maps.LatLng(44.6321977,10.960896), //@44.6059996,10.9783607,12z
+            zoom:15,
+            language:'en'
+        };
+
+        // create the map and place inside the div googleMap
+        var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+        // Control
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map);
+
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+
+        // get the list of point to add
+        loadJSON(function(response) {
+            // Parse JSON string into object
+            //var objJSON = eval("(function(){return " + response + ";})()");
+            var objJSON = JSON.parse(response);
+            console.log(objJSON);
+
+            var markers = [];
+            var marker;
+
+            var listapunti = objJSON.listaPunti; // recupero la lista dei punti
+            console.log(listapunti);
+            for (var i = 0, len = listapunti.length; i < len; i++) {
+                var punto = listapunti[i];
+                marker = new google.maps.Marker(
+                    {
+                        position: new google.maps.LatLng(punto.lat, punto.lng),
+                        title: punto.title,
+                        label: punto.title,
+                        description: punto.description,
+                        IDpunto: i,
+                        animation: google.maps.Animation.DROP
+
+                    }
+                );
+
+                marker.addListener('mouseover', function(){
+                    var infowindow = new google.maps.InfoWindow({content: '<h1>'+this.title+'</h1>'+this.description });
+
+                    infowindow.open({
+                        anchor: this,
+                        map,
+                        shouldFocus: true });
+
+                    console.log(this.title);
+                    console.log(this.IDpunto);
+                });
+                marker.addListener('click', function(){
+                    document.location.href = 'http://127.0.0.1:8080/animal/'+this.title;
+                });
+
+                markers.push(marker);
+
+
+
+            }
+
+
+
+            // aggiorno i punti
+            var options = {
+                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+            };
+
+            var markerCluster = new MarkerClusterer(map, markers, options);
+
+
+
+        });
+
+    }
+
+    {% endif %}
+
+    {% if fzjavascript=='myRoute'%}
+    // generic function with a map and a route
+    function myRoute() {
+        var mapProp = {
+            center: new google.maps.LatLng(44.6321977, 10.960896), //@44.6059996,10.9783607,12z
+            zoom: 15,
+            language: 'en'
+        };
+
+        // create the map and place inside the div googleMap
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        const pointlist = {{param}} ;
+        const flightPath = new google.maps.Polyline({
+            path: pointlist,
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+        });
+
+        flightPath.setMap(map);
+
+
+    }
+
+    {% endif %}
+
+    {% if fzjavascript=='myPointOnaRoute'%}
+    // generic function with a map and a route
+    function myPointOnaRoute() {
+        var mapProp = {
+            center: new google.maps.LatLng(44.6321977, 10.960896), //@44.6059996,10.9783607,12z
+            zoom: 15,
+            language: 'en'
+        };
+
+        // create the map and place inside the div googleMap
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        const sensorpointlist = {{param['points'] |safe}};
+        const pointonroutelist = {{param['nearest']}} ;
+        const pointlist = {{param['route']}} ;
+        const flightPath = new google.maps.Polyline({
+            path: pointlist,
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+        });
+
+        flightPath.setMap(map);
+        var markers = [];
+        for (var i = 0, len = sensorpointlist.length; i < len; i++) {
+            var punto = sensorpointlist[i];
+            marker = new google.maps.Marker(
+                {
+                    position: new google.maps.LatLng(punto.lat, punto.lng),
+                    title: punto.title,
+                    label: punto.title,
+                    description: punto.description,
+                    IDpunto: i,
+                    animation: google.maps.Animation.DROP
+
+                }
+            );
+            markers.push(marker);
+        }
+        // aggiorno i punti
+        var options = {
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        };
+
+        var markerCluster = new MarkerClusterer(map, markers, options);
+
+   }
+    {% endif %}
+
+
+</script>
+
+
+
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{APIKEY}}&callback={{fzjavascript}}&language=en"></script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="static/js/bootstrap.min.js"></script>
